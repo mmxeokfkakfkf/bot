@@ -3,7 +3,7 @@
 import discord
 from discord import app_commands
 
-TOKEN = "MTU1NzgzNzgxNTYyOTQ4ODI4OA.GkQAaq._agx7gnLEuJ5fbgSbLixqo1rr5V2b1RVEEUfTk"
+TOKEN = "MTU1NzgzNzgxNTYyOTQ4ODI4OA.Gt-dfq.fQrTeWq8dl9s3fkc-3cO_K_-Ugmb6OT3RV9sO4"
 CHANNEL_ID = 1234567890123456789  # right-click the webhook channel -> Copy Channel ID
 
 intents = discord.Intents.default()
